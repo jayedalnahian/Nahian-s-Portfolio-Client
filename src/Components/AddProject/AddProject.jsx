@@ -1,13 +1,37 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
 
 const AddProject = () => {
   const { register, handleSubmit, reset } = useForm();
-
+  
   const onSubmit = async (data) => {
+    const imageFile = data.image[0];
+    const formData = new FormData();
+    formData.append("image", imageFile);
+
+    let imageUrl = "";
+
+    try {
+      const imgRes = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+        formData
+      );
+
+      imageUrl = imgRes.data.data.url;
+    } catch (err) {
+      console.error("Image upload failed", err);
+      Swal.fire({
+        icon: "error",
+        title: "Image Upload Failed",
+        text: "Please try again.",
+        background: "#FFFBDE",
+        color: "#254D70",
+      });
+      return;
+    }
+
     const newProject = {
       id: `project-${uuidv4().slice(0, 4)}`,
       name: data.name,
@@ -19,12 +43,14 @@ const AddProject = () => {
       liveUrl: data.liveUrl,
       clientRepo: data.clientRepo,
       serverRepo: data.serverRepo,
-      image: data.image,
+      image: imageUrl,
     };
+
+   
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/projects",
+        "https://my-portfolio-website-server-seven.vercel.app/projects",
         newProject
       );
 
@@ -64,14 +90,35 @@ const AddProject = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Input label="Project Name" name="name" register={register} />
         <Input label="Category" name="category" register={register} />
-        <Input label="Completion Date" name="completionDate" type="date" register={register} />
+        <Input
+          label="Completion Date"
+          name="completionDate"
+          type="date"
+          register={register}
+        />
         <TextArea label="Description" name="description" register={register} />
-        <Input label="Technologies (comma-separated)" name="technologies" register={register} />
-        <TextArea label="Features (comma-separated)" name="features" register={register} />
+        <Input
+          label="Technologies (comma-separated)"
+          name="technologies"
+          register={register}
+        />
+        <TextArea
+          label="Features (comma-separated)"
+          name="features"
+          register={register}
+        />
         <Input label="Live URL" name="liveUrl" register={register} />
-        <Input label="Client GitHub Repo" name="clientRepo" register={register} />
-        <Input label="Server GitHub Repo" name="serverRepo" register={register} />
-        <Input label="Image Path (/images/projects/example.webp)" name="image" register={register} />
+        <Input
+          label="Client GitHub Repo"
+          name="clientRepo"
+          register={register}
+        />
+        <Input
+          label="Server GitHub Repo"
+          name="serverRepo"
+          register={register}
+        />
+        <Input label="Image" type="file" name="image" register={register} />
 
         <button
           type="submit"

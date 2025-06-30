@@ -7,7 +7,7 @@ const Navbar = () => {
   const links = (
     <>
       <li className="hover:text-[#954C2E] transition">
-        <Link to='/'>Home</Link>
+        <Link to="/">Home</Link>
       </li>
       <li className="hover:text-[#954C2E] transition">
         <ScrollLink
@@ -73,14 +73,16 @@ const Navbar = () => {
 
         {/* Mobile */}
         <div className="flex justify-center items-center gap-4">
-          <div className="avatar">
-            <div className="mask mask-squircle w-10">
-              <img
-                src="https://i.ibb.co/4ZLt5bhW/IMG-20250625-020833-min.jpg"
-                alt="Profile"
-              />
+          <Link to='/addProject'>
+            <div className="avatar">
+              <div className="mask mask-squircle w-10">
+                <img
+                  src="https://i.ibb.co/4ZLt5bhW/IMG-20250625-020833-min.jpg"
+                  alt="Profile"
+                />
+              </div>
             </div>
-          </div>
+          </Link>
           <div className="md:hidden">
             <div className="drawer">
               <input id="my-drawer" type="checkbox" className="drawer-toggle" />

@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const Projects = () => {
+const MyProjects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -69,7 +69,7 @@ const Projects = () => {
               <h3 className="text-xl font-bold text-[#131D4F]">{project.name}</h3>
               <p className="text-sm">{project.description}</p>
               <Link
-                to={`/project/${project._id}`}
+                to={`/adminPanel/project/${project._id}`}
                 className="inline-block bg-[#954C2E] text-[#EFE4D2] px-4 py-2 rounded hover:bg-[#7c3b23] transition text-sm"
               >
                 View Details
@@ -82,4 +82,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default MyProjects;
